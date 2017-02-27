@@ -8,6 +8,7 @@ namespace NotifManager.Models
     public class App
     {
         public Guid Id { get; set; }
+        public Guid ClientId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
         public string Icon { get; set; }

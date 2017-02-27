@@ -33,7 +33,7 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from [TESTE]." + GetTableName(typeof(T)) +
+                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from " + GetTableName(typeof(T)) +
                     (all ? "" : " where active = 1"));
             }
 
@@ -47,7 +47,7 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from [TESTE]." + GetTableName(typeof(T)) + " where active = 1 AND Id = @Id", new { Id = Id.ToString() }).SingleOrDefault();
+                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from " + GetTableName(typeof(T)) + " where active = 1 AND Id = @Id", new { Id = Id.ToString() }).SingleOrDefault();
             }
 
             return result;
@@ -60,7 +60,7 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from [TESTE]." + GetTableName(typeof(T)) + " where active = 1 AND Id in @Id" , new { Id });
+                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from " + GetTableName(typeof(T)) + " where active = 1 AND Id in @Id" , new { Id });
             }
 
             return result;
@@ -73,7 +73,7 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from [TESTE]." + GetTableName(typeof(T)) + " where Id in @Id" + (all ? "" : " And active = 1"), new { Id });
+                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from " + GetTableName(typeof(T)) + " where Id in @Id" + (all ? "" : " And active = 1"), new { Id });
             }
 
             return result;
@@ -86,7 +86,7 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                result = conexaoBD.ExecuteScalar<int>("select 1 from [TESTE]." + GetTableName(typeof(T)) + " where Id = @Id", new { Id = Id.ToString() });
+                result = conexaoBD.ExecuteScalar<int>("select 1 from " + GetTableName(typeof(T)) + " where Id = @Id", new { Id = Id.ToString() });
             }
 
             return result.Equals(1);
@@ -100,18 +100,8 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                string query = "insert into [TESTE]." + GetTableName(typeof(T)) + " (" + string.Join(",", properties) +
+                string query = "insert into " + GetTableName(typeof(T)) + " (" + string.Join(",", properties) +
                     ") values (" + string.Join(",", properties.Select(x => string.Format("@{0}", x))) + ")";
-
-                string query2 = "";
-                if (!(obj is Models.Log))
-                {
-                    query2 = @"insert into [TESTE]." + GetTableName(typeof(T)) + "Hist(IdHist," + string.Join(",", properties) +
-                    ") values ('" + Guid.NewGuid().ToString() + "'," + string.Join(",", properties.Select(x => string.Format("@{0}", x))) + ")";
-                }
-
-                query = query + @"
-" + query2;
 
                 result = conexaoBD.Execute(query, obj);
             }
@@ -127,14 +117,8 @@ namespace NotifManager.Repositories
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
 
-                string query = "update [TESTE]." + GetTableName(typeof(T)) + " set " + string.Join(",", properties.Select(x => string.Format("{0} = @{1}", x, x))) +
+                string query = "update " + GetTableName(typeof(T)) + " set " + string.Join(",", properties.Select(x => string.Format("{0} = @{1}", x, x))) +
                    " where Id = @Id";
-
-                string query2 = @"insert into [TESTE]." + GetTableName(typeof(T)) + "Hist(IdHist," + string.Join(",", properties) +
-                ") values ('" + Guid.NewGuid().ToString() + "'," + string.Join(",", properties.Select(x => string.Format("@{0}", x))) + ")";
-
-                query = query + @"
-" + query2;
 
                 result = conexaoBD.Execute(query, obj);
             }
@@ -149,47 +133,13 @@ namespace NotifManager.Repositories
             using (var conexaoBD = new SqlConnection(ConfigurationManager.ConnectionStrings["JMContext"].ConnectionString))
             {
                 IEnumerable<string> properties = GetProperties(typeof(T));
-
-                //string query = "delete [TESTE]." + GetTableName(typeof(T)) + " where Id = @Id" + new { Id = Id.ToString() };
-                string query = "update [TESTE]." + GetTableName(typeof(T)) + " set active = 0 where Id = '" + Id.ToString() + "'";
-
-                string query2 = "";
-                //string query2 = @"insert into [TESTE]." + GetTableName(typeof(T)) + "Hist(IdHist," + string.Join(",", properties) +
-                //") values ('" + Guid.NewGuid().ToString() + "'," + string.Join(",", properties.Select(x => string.Format("@{0}", x))) + ")";
-
-                query = query + @"
-" + query2;
+              
+                string query = "update " + GetTableName(typeof(T)) + " set active = 0 where Id = '" + Id.ToString() + "'";
 
                 result = conexaoBD.Execute(query);
             }
 
             return result > 0;
-        }
-
-        public virtual T GetHist<T>(Guid Id)
-        {
-            T result;
-            using (var conexaoBD = new SqlConnection(ConfigurationManager.ConnectionStrings["JMContext"].ConnectionString))
-            {
-                IEnumerable<string> properties = GetProperties(typeof(T));
-
-                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from [TESTE]." + GetTableName(typeof(T)) + "Hist where Id = @Id", new { Id = Id.ToString() }).SingleOrDefault();
-            }
-
-            return result;
-        }
-
-        public virtual IEnumerable<T> GetByHist<T>(Guid Id)
-        {
-            IEnumerable<T> result;
-            using (var conexaoBD = new SqlConnection(ConfigurationManager.ConnectionStrings["JMContext"].ConnectionString))
-            {
-                IEnumerable<string> properties = GetProperties(typeof(T));
-
-                result = conexaoBD.Query<T>("select " + string.Join(",", properties) + " from [TESTE]." + GetTableName(typeof(T)) + "Hist where Id = @Id", new { Id = Id.ToString() });
-            }
-
-            return result;
         }
 
         public void Dispose()

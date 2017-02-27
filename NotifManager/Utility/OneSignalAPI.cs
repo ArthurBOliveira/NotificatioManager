@@ -27,7 +27,7 @@ namespace NotifManager.Utility
             JavaScriptSerializer serializer = new JavaScriptSerializer();
             object obj = new
             {
-                app_id = message.AppKey,
+                app_id = message.AppId,
                 contents = new { en = "English Content", pt = message.Content },
                 headings = new { en = "English Title", pt = message.Title },
                 subtitle = new { en = "English Subtitle", pt = message.SubTitle },
@@ -53,6 +53,10 @@ namespace NotifManager.Utility
                         responseContent = reader.ReadToEnd();
                     }
                 }
+
+                string[] aux = responseContent.Split('"');
+
+                message.Id = Guid.Parse(aux[3]);
             }
             catch (WebException ex)
             {
@@ -113,7 +117,7 @@ namespace NotifManager.Utility
 
                 a.Id = Guid.Parse(aux[3]);
                 a.SafariId = Guid.Parse(aux[47].Split('.')[3]);
-                a.RestKey = aux[69];
+                a.RestKey = aux[87];
             }
             catch (WebException ex)
             {
