@@ -1,0 +1,109 @@
+﻿@model NotifManager.ViewModels.IndexVM
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="table-responsive">
+    <h2>Clientes</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Nome</td>
+                <td>Email</td>
+                <td>Senha</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (NotifManager.Models.Client client in Model.Clients)
+            {
+                <tr>
+                    <td>@client.Id</td>
+                    <td>@client.Name</td>
+                    <td>@client.Email</td>
+                    <td>@client.Password</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<div class="table-responsive">
+    <h2>Aplicativos</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Cliente</td>
+                <td>Nome</td>
+                <td>Url</td>
+                <td>Icone</td>
+                <td>SubDomain</td>
+                <td>Rest Key</td>
+                @*<td>Log</td>*@
+                <td>Safari Id</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (NotifManager.Models.App app in Model.Apps)
+            {
+                <tr>
+                    <td>@app.Id</td>
+                    <td>@app.ClientId</td>
+                    <td>@app.Name</td>
+                    <td>@app.Url</td>
+                    <td>@app.Icon</td>
+                    <td>@app.SubDomain</td>
+                    <td>@app.RestKey</td>
+                    @*<td>@app.Log</td>*@
+                    <td>@app.SafariId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<br />
+
+<div class="table-responsive">
+    <h2>Mensagens</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Rest Key</td>
+                <td>Aplicativo</td>
+                <td>Title</td>
+                <td>Conteúdo</td>
+                <td>Sub Título</td>
+                <td>Url</td>
+                @*<td>Log</td>*@
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (NotifManager.Models.Message message in Model.Messages)
+            {
+                <tr>
+                    <td>@message.Id</td>
+                    <td>@message.RestKey</td>
+                    <td>@message.AppId</td>
+                    <td>@message.Title</td>
+                    <td>@message.Content</td>
+                    <td>@message.SubTitle</td>
+                    <td>@message.Url</td>
+                    @*<td>@message.Log</td>*@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
