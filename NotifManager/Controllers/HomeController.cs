@@ -16,14 +16,17 @@ namespace NotifManager.Controllers
         private ClientRepository _clientRep;
         private MessageRepository _messageRep;
 
+        private SessionHelper _session;
+
         public HomeController()
         {
             _appRep = new AppRepository();
             _clientRep = new ClientRepository();
             _messageRep = new MessageRepository();
+            _session = new SessionHelper(System.Web.HttpContext.Current.Session);
         }
 
-        // GET: Home
+        [AllowAnonymous]
         public ActionResult Index()
         {
             IndexVM ivm = new IndexVM();
@@ -35,12 +38,35 @@ namespace NotifManager.Controllers
             return View(ivm);
         }
 
+        [AllowAnonymous]
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult Login(Client c)
+        {
+            Client clientLogged = _clientRep.GetClientByEmail(c.Email);
+
+            if (clientLogged != null)
+            {
+                if (Hash.ValidatePassword(c.Password, clientLogged.Password))
+                    _session.CurrentClient = clientLogged;
+            }
+
+            return View();
+        }
+
+        [Authorize]
         public ActionResult App()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult App(App app)
         {
             app.SubDomain = app.Name.Replace(" ", "").ToLower();
@@ -53,35 +79,46 @@ namespace NotifManager.Controllers
             return View(app);
         }
 
+        [Authorize]
         public ActionResult Message()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult Message(Message message)
         {
             message = OneSignalAPI.PostMessage(message);
 
-            if(message.Id != Guid.Empty)
+            if (message.Id != Guid.Empty)
                 _messageRep.PostData<Message>(message);
 
             return View(message);
         }
 
+        [AllowAnonymous]
         public ActionResult Client()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult Client(Client client)
         {
-            client.Id = Guid.NewGuid();
+            if (ModelState.IsValid)
+            {
+                client.Id = Guid.NewGuid();
 
-            _clientRep.PostData<Client>(client);
+                client.Password = Hash.CreateHash(client.Password);
 
-            return View(client);
+                _clientRep.PostData<Client>(client);
+
+                return View(client);
+            }
+            else
+                return View();            
         }
     }
 }

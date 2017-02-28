@@ -154,7 +154,10 @@
     <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
     <Compile Include="Repositories\MessageRepository.cs" />
+    <Compile Include="Utility\AuthorizationFilter.cs" />
+    <Compile Include="Utility\Hash.cs" />
     <Compile Include="Utility\OneSignalAPI.cs" />
+    <Compile Include="Utility\SessionHelper.cs" />
     <Compile Include="ViewModels\IndexVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +175,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Home\Client.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
