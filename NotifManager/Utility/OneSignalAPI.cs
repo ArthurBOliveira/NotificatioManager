@@ -25,15 +25,22 @@ namespace NotifManager.Utility
             request.Headers.Add("authorization", "Basic " + message.RestKey);
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
+
+            string timezone = TimeZone.CurrentTimeZone.StandardName;
+
+            string scheduledDate = message.IsSchedule ? message.ScheduleDate.ToString("yyyy-mm-dd hh:MM:ss") + " " + timezone : "";
+
             object obj = new
             {
                 app_id = message.AppId,
-                contents = new { en = "English Content", pt = message.Content },
-                headings = new { en = "English Title", pt = message.Title },
-                subtitle = new { en = "English Subtitle", pt = message.SubTitle },
+                contents = new { en = message.Content, pt = message.Content },
+                headings = new { en = message.Title, pt = message.Title },
+                subtitle = new { en = message.SubTitle, pt = message.SubTitle },
                 url = message.Url,
-                included_segments = new string[] { "All" }
+                included_segments = new string[] { "All" },
+                send_after = scheduledDate
             };
+
             string param = serializer.Serialize(obj);
             byte[] byteArray = Encoding.UTF8.GetBytes(param);
 

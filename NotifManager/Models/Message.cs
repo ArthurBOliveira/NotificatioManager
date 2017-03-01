@@ -27,5 +27,7 @@ namespace NotifManager.Models
         [Display(Name = "Link para Direcionamento")]
         public string Url { get; set; }
         public string Log { get; set; }
+        public bool IsSchedule { get; set; }
+        public DateTime ScheduleDate { get; set; }
     }
 }
