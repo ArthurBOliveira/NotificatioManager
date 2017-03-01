@@ -56,7 +56,12 @@ namespace NotifManager.Utility
 
                 string[] aux = responseContent.Split('"');
 
-                message.Id = Guid.Parse(aux[3]);
+                Guid id;
+
+                if (Guid.TryParse(aux[3], out id))
+                    message.Id = id;
+                else
+                    message.Id = Guid.Empty;
             }
             catch (WebException ex)
             {
@@ -66,6 +71,48 @@ namespace NotifManager.Utility
             message.Log = responseContent;
 
             return message;
+        }
+
+        public static MessageReply GetMessage(Guid messageId, Guid appId, string RestKey)
+        {
+            MessageReply result = new MessageReply();
+
+            result.Id = messageId;
+
+            var request = WebRequest.Create("https://onesignal.com/api/v1/notifications/" + messageId.ToString() + "?app_id=" + appId) as HttpWebRequest;
+
+            request.KeepAlive = true;
+            request.Method = "Get";
+            request.ContentType = "application/json; charset=utf-8";
+
+            request.Headers.Add("authorization", "Basic " + RestKey);
+
+            string responseContent = null;
+
+            try
+            {
+                using (var response = request.GetResponse() as HttpWebResponse)
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseContent = reader.ReadToEnd();
+                    }
+                }
+
+                string[] aux = responseContent.Split('"');
+
+                result.Converteds = int.Parse(aux[60].Split(':')[1].Split(',')[0]);
+                result.Sucessfuls = int.Parse(aux[136].Split(':')[1].Split(',')[0]);
+                result.Faileds = int.Parse(aux[72].Split(':')[1].Split(',')[0]);
+            }
+            catch (WebException ex)
+            {
+                responseContent = ex.Message;
+            }
+
+            result.Log = responseContent;
+
+            return result;
         }
         #endregion
 

@@ -55,7 +55,7 @@ namespace NotifManager.Controllers
 
             if (clientLogged != null && Hash.ValidatePassword(c.Password, clientLogged.Password))
             {
-                _session.CurrentClient = clientLogged;               
+                _session.CurrentClient = clientLogged;
 
                 return View("Index", CurrentIndex(clientLogged.Id));
             }
@@ -112,43 +112,77 @@ namespace NotifManager.Controllers
         [AuthorizationFilter]
         public ActionResult Message()
         {
-            return PartialView();
+            List<MessageVM> mvm = new List<MessageVM>();
+            List<Guid> appsId = new List<Guid>();
+
+            IEnumerable<App> apps = _appRep.GetAppsByClient(_session.CurrentClient.Id);
+
+            foreach (App a in apps)
+            {
+                appsId.Add(a.Id);
+            }
+
+            IEnumerable<Message> messages = _messageRep.GetMessagesByApp((IEnumerable<Guid>)appsId);
+
+            List<App> appsAux = (List<App>)apps;
+
+            foreach (Message m in messages)
+            {
+                App appAux = appsAux.Find(x => x.Id == m.AppId);
+
+                MessageVM aux = new MessageVM(m.Id, m.AppId, appAux.Name, appAux.Icon, m.Title, m.Content, m.SubTitle, m.Url);
+
+                mvm.Add(aux);
+            }
+
+            return View(mvm);
         }
 
         [HttpPost]
         [AuthorizationFilter]
         public ActionResult Message(Message message)
         {
-            if (ModelState.IsValid)
+            App app = _appRep.GetData<App>(message.AppId);
+            if (app.ClientId == _session.CurrentClient.Id)
             {
-                App app = _appRep.GetData<App>(message.AppId);
-                if (app.ClientId == _session.CurrentClient.Id)
+                message.RestKey = app.RestKey;
+
+                //message.AppId = new Guid("842a9d9d-e03c-4189-a651-0a55825a1b44");
+                //message.RestKey = "ZTcyY2NkYTktMjcwOS00M2U4LTllZTAtZTFhZmQ3ZWIzZWM1";
+
+                message = OneSignalAPI.PostMessage(message);
+
+                if (message.Id != Guid.Empty)
                 {
-                    message.RestKey = app.RestKey;
-
-                    message = OneSignalAPI.PostMessage(message);
-
-                    if (message.Id != Guid.Empty)
-                    {
-                        _messageRep.PostData<Message>(message);
-                        return Json(message);
-                    }
-                    else
-                    {
-                        return Json("Error");
-                    }
+                    _messageRep.PostData<Message>(message);
+                    return Json("Enviada com sucesso!");
                 }
                 else
                 {
-                    return Json("Error");
+                    return Json("Não existe pessoas inscritas.");
                 }
-                
             }
             else
             {
-                return Json("Error");
+                return Json("Você não pode acessar este Aplicativo.");
             }
-            
+        }
+
+        [AuthorizationFilter]
+        public ActionResult MessageReply(Guid messageId, Guid appId)
+        {
+            App app = _appRep.GetData<App>(appId);
+
+            if (app.ClientId == _session.CurrentClient.Id)
+            {
+                MessageReply reply = OneSignalAPI.GetMessage(messageId, appId, "ZTcyY2NkYTktMjcwOS00M2U4LTllZTAtZTFhZmQ3ZWIzZWM1");
+
+                return View(reply);
+            }
+            else
+            {
+                return View("Index", CurrentIndex(_session.CurrentClient.Id));
+            }
         }
 
         [AllowAnonymous]
@@ -180,7 +214,7 @@ namespace NotifManager.Controllers
         {
             IndexVM ivm = new IndexVM();
 
-            ivm.Apps = (List<App>)_appRep.GetAppsByClient(id);
+            ivm.Apps = (List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id);
 
             return ivm;
         }

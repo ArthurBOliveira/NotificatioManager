@@ -1,0 +1,109 @@
+﻿@model NotifManager.Models.MessageReply
+
+@{
+    ViewBag.Title = "MessageReply";
+}
+
+<h2>Alcance da Mensagem</h2>
+
+<div id="chartContainer1"></div>
+<br />
+<div id="chartContainer2" style="    margin-top: 500px;"></div>
+<br />
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Enviados com Sucesso: 
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Sucessfuls)
+        </dd>
+
+        <dt>
+            Falhados:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Faileds)
+        </dd>
+
+        <dt>
+            Usuário clicou:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Converteds)
+        </dd>
+
+    </dl>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var chart = new CanvasJS.Chart("chartContainer1", {
+            title: {
+                text: "Alcance da Mensagem"
+            },
+            animationEnabled: true,
+            legend: {
+                verticalAlign: "center",
+                horizontalAlign: "left",
+                fontSize: 20,
+                fontFamily: "Helvetica"
+            },
+            theme: "theme2",
+            data: [
+            {
+                type: "pie",
+                indexLabelFontFamily: "Garamond",
+                indexLabelFontSize: 20,
+                indexLabel: "{label} {y}%",
+                startAngle: -20,
+                showInLegend: true,
+                toolTipContent: "{legendText} {y}%",
+                dataPoints: [
+                    { y: @Model.Sucessfuls, legendText: "Entregue", label: "Entrege" },
+                    { y: @Model.Faileds, legendText: "Não Entrege", label: "Não Entrege" },
+                ],
+
+            }
+            ]
+        });
+        chart.render();
+    });
+
+    $(function () {
+        var chart = new CanvasJS.Chart("chartContainer2", {
+            title: {
+                text: "Resposta da Mensagem"
+            },
+            animationEnabled: true,
+            legend: {
+                verticalAlign: "center",
+                horizontalAlign: "left",
+                fontSize: 20,
+                fontFamily: "Helvetica"
+            },
+            theme: "theme2",
+            data: [
+            {
+                type: "pie",
+                indexLabelFontFamily: "Garamond",
+                indexLabelFontSize: 20,
+                indexLabel: "{label} {y}%",
+                startAngle: -20,
+                showInLegend: true,
+                toolTipContent: "{legendText} {y}%",
+                dataPoints: [
+                    { y: @Model.Converteds, legendText: "Clicado", label: "Clicado" },
+                    { y: @((Model.Sucessfuls + Model.Faileds) - @Model.Converteds), legendText: "Não Clicado", label: "Não Clicado" },
+                ],
+
+            }
+            ]
+        });
+        chart.render();
+    });
+</script>

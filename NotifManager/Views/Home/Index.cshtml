@@ -40,13 +40,10 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (arg) {
-                    if(arg != "Error")
-                        alert("Enviado com Sucesso!")
-                    else
-                        alert("Erro!")
+                    alert(arg);
                 },
                 error: function (xhr) {
-                    alert("Erro!")
+                    alert("Erro!");
                 }
             });
         }
