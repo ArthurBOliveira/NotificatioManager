@@ -1,3 +1,11 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    NotifManager.Models.Client client = (NotifManager.Models.Client)HttpContext.Current.Session["CurrentClient"];
+    if (client.Id != Guid.Empty)
+    {
+        Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+}   

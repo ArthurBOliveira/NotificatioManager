@@ -4,106 +4,175 @@
     ViewBag.Title = "Index";
 }
 
+@if (Model != null)
+{
+    <script>
+        $(document).on("click", ".modalLink", function () {
+            var passedID = $(this).data('id');
+            $(".modal-body .hiddenid").val(passedID);
+        });
 
-<div class="table-responsive">
-    <h2>Clientes</h2>
+        function SendMessage() {
+            var appId = $(".hiddenid").val();
+            var title = $("#Title").val();
+            var content = $("#Content").val();
+            var subTitle = $("#SubTitle").val();
+            var url = $("#Url").val();
 
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Nome</td>
-                <td>Email</td>
-                <td>Senha</td>
-            </tr>
-        </thead>
+            var complexObject = {
+                Id: "",
+                RestKey: "",
+                AppId: appId,
+                Title: title,
+                content: content,
+                SubTitle: subTitle,
+                Url: url,
+                Log: ""
+            };
 
-        <tbody>
-            @foreach (NotifManager.Models.Client client in Model.Clients)
-            {
+            var obj = { Message: complexObject };
+            var data2send = JSON.stringify(obj);
+
+            $.ajax({
+                type: "POST",
+                url: '/Home/Message',
+                data: data2send,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (arg) {
+                    if(arg != "Error")
+                        alert("Enviado com Sucesso!")
+                    else
+                        alert("Erro!")
+                },
+                error: function (xhr) {
+                    alert("Erro!")
+                }
+            });
+        }
+    </script>
+
+    <div class="table-responsive">
+        <h2>Seus Aplicativos</h2>
+
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@client.Id</td>
-                    <td>@client.Name</td>
-                    <td>@client.Email</td>
-                    <td>@client.Password</td>
+                    <td></td>
+                    <td>Nome</td>
+                    <td>Url</td>
+                    <td>Mensagem</td>
+                    <td>Editar</td>
+                    <td>Deletar</td>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
 
-<br />
-
-<div class="table-responsive">
-    <h2>Aplicativos</h2>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Cliente</td>
-                <td>Nome</td>
-                <td>Url</td>
-                <td>Icone</td>
-                <td>SubDomain</td>
-                <td>Rest Key</td>
-                @*<td>Log</td>*@
-                <td>Safari Id</td>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach (NotifManager.Models.App app in Model.Apps)
-            {
+            <tbody>
+                @foreach (NotifManager.Models.App app in Model.Apps)
+                {
                 <tr>
-                    <td>@app.Id</td>
-                    <td>@app.ClientId</td>
-                    <td>@app.Name</td>
-                    <td>@app.Url</td>
-                    <td>@app.Icon</td>
-                    <td>@app.SubDomain</td>
-                    <td>@app.RestKey</td>
-                    @*<td>@app.Log</td>*@
-                    <td>@app.SafariId</td>
+                    <td class="col-xs-1"><img style="width: 30px;" src="@app.Icon" /></td>
+                    <td class="col-xs-4">@app.Name</td>
+                    <td class="col-xs-4"><a href="@app.Url">@app.Url</a></td>
+                    <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Mensagem"><button class="btn btn-success btn-xs modalLink" data-id="@app.Id" data-title="Message" data-toggle="modal" data-target="#message"><span class="glyphicon glyphicon-send"></span></button></p>                       </td>
+                    <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Editar"><button class="btn btn-primary btn-xs modalLink" data-id="@app.Id" data-title="Edit" data-toggle="modal" data-target="#edit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
+                    <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Deletar"><button class="btn btn-danger btn-xs modalLink" data-id="@app.Id" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                }
+            </tbody>
+        </table>
+    </div>
 
-<br />
+    <input type="button" value="Criar Aplicativo" onclick="location.href='/home/app';" class="btn btn-default" />
 
-<div class="table-responsive">
-    <h2>Mensagens</h2>
+    <div class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="height: 320px; width: 312px;">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align" id="Heading">Enviar Mensagem</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Hidden("id", "", new { @class = "hiddenid" })
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" data-val="true" data-val-required="Título Obrigatório" id="Title" name="Title" type="text" value="" placeholder="Título" />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Title" data-valmsg-replace="true"></span>
+                    </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Id</td>
-                <td>Rest Key</td>
-                <td>Aplicativo</td>
-                <td>Title</td>
-                <td>Conteúdo</td>
-                <td>Sub Título</td>
-                <td>Url</td>
-                @*<td>Log</td>*@
-            </tr>
-        </thead>
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" data-val="true" data-val-required="Conteúdo Obrigatório" id="Content" name="Content" type="text" value="" placeholder="Conteúdo" />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Content" data-valmsg-replace="true"></span>
+                    </div>
 
-        <tbody>
-            @foreach (NotifManager.Models.Message message in Model.Messages)
-            {
-                <tr>
-                    <td>@message.Id</td>
-                    <td>@message.RestKey</td>
-                    <td>@message.AppId</td>
-                    <td>@message.Title</td>
-                    <td>@message.Content</td>
-                    <td>@message.SubTitle</td>
-                    <td>@message.Url</td>
-                    @*<td>@message.Log</td>*@
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" id="SubTitle" name="SubTitle" type="text" value="" placeholder="Sub Título" />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="SubTitle" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" id="Url" name="Url" type="url" value="" placeholder="Link para Direcionamento" />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Url" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="button" onclick="SendMessage();" value="Enviar" class="btn btn-success" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align" id="Heading">Editar Aplicativo</h4>
+                </div>
+                <div class="modal-body">
+                    @Html.Hidden("id", "", new { @class = "hiddenid" })
+                    <div class="form-group">
+                        <input class="form-control " type="text" placeholder="Mohsin">
+                    </div>
+                    <div class="form-group">
+
+                        <input class="form-control " type="text" placeholder="Irshad">
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="2" class="form-control" placeholder="CB 106/107 Street # 11 Wah Cantt Islamabad Pakistan"></textarea>
+
+
+                    </div>
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Salvar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                @Html.Hidden("id", "", new { @class = "hiddenid" })
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+                    <h4 class="modal-title custom_align" id="Heading">Deletar Aplicativo</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Você tem certeza que quer deletar este Aplicativo? Não é possível recuperá-lo depois</div>
+
+                </div>
+                <div class="modal-footer ">
+                    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok-sign"></span> Sim</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Não</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+}

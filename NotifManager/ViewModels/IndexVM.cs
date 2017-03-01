@@ -8,8 +8,6 @@ namespace NotifManager.ViewModels
 {
     public class IndexVM
     {
-        public List<Client> Clients { get; set; }
         public List<App> Apps { get; set; }
-        public List<Message> Messages { get; set; }
     }
 }

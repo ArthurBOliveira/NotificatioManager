@@ -23,9 +23,12 @@
                 @Html.ActionLink("Notification Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li>@Html.ActionLink("Registrar", "Client", "Home")</li>
-                    <li>@Html.ActionLink("Login", "Login", "Home")</li>
+                    <li><a>Bem-vindo(a)</a></li>
+                    <li>@Html.ActionLink("Sair", "Logout", "Home")</li>
                 </ul>
             </div>
         </div>

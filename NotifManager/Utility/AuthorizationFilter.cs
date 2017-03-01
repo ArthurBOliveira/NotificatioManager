@@ -8,6 +8,8 @@ namespace NotifManager.Utility
 {
     public class AuthorizationFilter : AuthorizeAttribute, IAuthorizationFilter
     {
+        private SessionHelper _session = new SessionHelper(System.Web.HttpContext.Current.Session);
+
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             if (filterContext.ActionDescriptor.IsDefined(typeof(AllowAnonymousAttribute), true)
@@ -18,7 +20,7 @@ namespace NotifManager.Utility
             }
 
             // Check for authorization
-            if (HttpContext.Current.Session["CurrentClient"] == null)
+            if (_session.CurrentClient.Id == Guid.Empty)
             {
                 filterContext.Result = filterContext.Result = new HttpUnauthorizedResult();
             }

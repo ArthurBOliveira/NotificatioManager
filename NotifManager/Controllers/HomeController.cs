@@ -29,13 +29,16 @@ namespace NotifManager.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            IndexVM ivm = new IndexVM();
+            if (_session.CurrentClient.Id != Guid.Empty)
+            {
+                IndexVM ivm = new IndexVM();
 
-            ivm.Clients = (List<Client>)_clientRep.GetData<Client>(false);
-            ivm.Apps = (List<App>)_clientRep.GetData<App>(false);
-            ivm.Messages = (List<Message>)_clientRep.GetData<Message>(false);
+                ivm.Apps = (List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id);
 
-            return View(ivm);
+                return View(ivm);
+            }
+            else
+                return View();
         }
 
         [AllowAnonymous]
@@ -50,51 +53,102 @@ namespace NotifManager.Controllers
         {
             Client clientLogged = _clientRep.GetClientByEmail(c.Email);
 
-            if (clientLogged != null)
+            if (clientLogged != null && Hash.ValidatePassword(c.Password, clientLogged.Password))
             {
-                if (Hash.ValidatePassword(c.Password, clientLogged.Password))
-                    _session.CurrentClient = clientLogged;
-            }
+                _session.CurrentClient = clientLogged;               
 
-            return View();
+                return View("Index", CurrentIndex(clientLogged.Id));
+            }
+            else
+            {
+                return View();
+            }
         }
 
-        [Authorize]
+        [AuthorizationFilter]
+        public ActionResult Logout()
+        {
+            _session.CurrentClient = new Client();
+
+            return View("Index");
+        }
+
+        [AuthorizationFilter]
         public ActionResult App()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
+        [AuthorizationFilter]
         public ActionResult App(App app)
         {
-            app.SubDomain = app.Name.Replace(" ", "").ToLower();
+            if (ModelState.IsValid)
+            {
+                if (_session.CurrentClient.Id != Guid.Empty)
+                {
+                    app.SubDomain = app.Name.Replace(" ", "").ToLower();
 
-            app = OneSignalAPI.PostApp(app);
+                    app.ClientId = _session.CurrentClient.Id;
 
-            if (app.Id != Guid.Empty)
-                _appRep.PostData<App>(app);
+                    app = OneSignalAPI.PostApp(app);
 
-            return View(app);
+                    if (app.Id != Guid.Empty)
+                        _appRep.PostData<App>(app);
+
+                    return View("Index", CurrentIndex(app.ClientId));
+                }
+                else
+                {
+                    return View();
+                }
+            }
+            else
+            {
+                return View();
+            }
         }
 
-        [Authorize]
+        [AuthorizationFilter]
         public ActionResult Message()
         {
-            return View();
+            return PartialView();
         }
 
         [HttpPost]
-        [Authorize]
+        [AuthorizationFilter]
         public ActionResult Message(Message message)
         {
-            message = OneSignalAPI.PostMessage(message);
+            if (ModelState.IsValid)
+            {
+                App app = _appRep.GetData<App>(message.AppId);
+                if (app.ClientId == _session.CurrentClient.Id)
+                {
+                    message.RestKey = app.RestKey;
 
-            if (message.Id != Guid.Empty)
-                _messageRep.PostData<Message>(message);
+                    message = OneSignalAPI.PostMessage(message);
 
-            return View(message);
+                    if (message.Id != Guid.Empty)
+                    {
+                        _messageRep.PostData<Message>(message);
+                        return Json(message);
+                    }
+                    else
+                    {
+                        return Json("Error");
+                    }
+                }
+                else
+                {
+                    return Json("Error");
+                }
+                
+            }
+            else
+            {
+                return Json("Error");
+            }
+            
         }
 
         [AllowAnonymous]
@@ -118,7 +172,17 @@ namespace NotifManager.Controllers
                 return View(client);
             }
             else
-                return View();            
+                return View();
+        }
+
+        [NonAction]
+        private IndexVM CurrentIndex(Guid id)
+        {
+            IndexVM ivm = new IndexVM();
+
+            ivm.Apps = (List<App>)_appRep.GetAppsByClient(id);
+
+            return ivm;
         }
     }
 }

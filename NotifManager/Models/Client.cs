@@ -21,13 +21,13 @@ namespace NotifManager.Models
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Senha Obrigatória")]
-        [StringLength(100, ErrorMessage = "Senha precisa ter pelo menos 6 caracteres")]
+        [StringLength(100, ErrorMessage = "Senha precisa ter pelo menos 6 caracteres"), MinLength(6, ErrorMessage = "Senha precisa ter pelo menos 6 caracteres")]
         [DataType(DataType.Password)]
         [Display(Name = "Senha")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Confirmação Obrigatória")]
-        [StringLength(100, ErrorMessage = "Senha precisa ter pelo menos 6 caracteres")]
+        [StringLength(100, ErrorMessage = "Senha precisa ter pelo menos 6 caracteres"), MinLength(6, ErrorMessage = "Senha precisa ter pelo menos 6 caracteres")]
         [DataType(DataType.Password)]
         [Compare("Password")]
         [Display(Name = "Confirmar Senha")]
