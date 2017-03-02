@@ -26,8 +26,11 @@ namespace NotifManager.Models
         [DataType(DataType.Url)]
         [Display(Name = "Link para Direcionamento")]
         public string Url { get; set; }
-        public string Log { get; set; }
-        public bool IsSchedule { get; set; }
+
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Agendar")]
         public DateTime ScheduleDate { get; set; }
+
+        public string Log { get; set; }        
     }
 }

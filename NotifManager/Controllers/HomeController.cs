@@ -31,9 +31,7 @@ namespace NotifManager.Controllers
         {
             if (_session.CurrentClient.Id != Guid.Empty)
             {
-                IndexVM ivm = new IndexVM();
-
-                ivm.Apps = (List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id);
+                IndexVM ivm = CurrentIndex(_session.CurrentClient.Id);
 
                 return View(ivm);
             }
@@ -130,12 +128,23 @@ namespace NotifManager.Controllers
             {
                 App appAux = appsAux.Find(x => x.Id == m.AppId);
 
-                MessageVM aux = new MessageVM(m.Id, m.AppId, appAux.Name, appAux.Icon, m.Title, m.Content, m.SubTitle, m.Url);
+                MessageVM aux = new MessageVM(m.Id, m.AppId, appAux.RestKey, appAux.Name, appAux.Icon, m.Title, m.Content, m.SubTitle, m.Url);
 
                 mvm.Add(aux);
             }
 
             return View(mvm);
+        }
+
+        [AuthorizationFilter]
+        public ActionResult Message(Guid appId, string restKey)
+        {
+            Message m = new Models.Message();
+
+            m.AppId = appId;
+            m.RestKey = restKey;
+
+            return View(m);
         }
 
         [HttpPost]
@@ -213,8 +222,30 @@ namespace NotifManager.Controllers
         private IndexVM CurrentIndex(Guid id)
         {
             IndexVM ivm = new IndexVM();
+            List<MessageVM> mvm = new List<MessageVM>();
+            List<Guid> appsId = new List<Guid>();
 
             ivm.Apps = (List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id);
+
+            foreach (App a in ivm.Apps)
+            {
+                appsId.Add(a.Id);
+            }
+
+            IEnumerable<Message> messages = _messageRep.GetMessagesByApp((IEnumerable<Guid>)appsId);
+
+            List<App> appsAux = (List<App>)ivm.Apps;
+
+            foreach (Message m in messages)
+            {
+                App appAux = appsAux.Find(x => x.Id == m.AppId);
+
+                MessageVM aux = new MessageVM(m.Id, m.AppId, appAux.RestKey, appAux.Name, appAux.Icon, m.Title, m.Content, m.SubTitle, m.Url);
+
+                mvm.Add(aux);
+            }
+
+            ivm.Messages = mvm;
 
             return ivm;
         }

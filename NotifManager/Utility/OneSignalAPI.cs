@@ -28,7 +28,7 @@ namespace NotifManager.Utility
 
             string timezone = TimeZone.CurrentTimeZone.StandardName;
 
-            string scheduledDate = message.IsSchedule ? message.ScheduleDate.ToString("yyyy-mm-dd hh:MM:ss") + " " + timezone : "";
+            string scheduledDate = message.ScheduleDate != null ? message.ScheduleDate.ToString("yyyy-mm-dd hh:MM:ss") + " " + timezone : "";
 
             object obj = new
             {

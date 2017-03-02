@@ -112,6 +112,11 @@
                     </div>
 
                     <div class="form-group">
+                        <input class="form-control text-box single-line" id="Url" name="Url" type="url" value="" placeholder="Link para Direcionamento" />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Url" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <div class="form-group">
                         <input type="button" onclick="SendMessage();" value="Enviar" class="btn btn-success" />
                     </div>
                 </div>
@@ -171,5 +176,59 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
+    </div>
+
+
+    <br />
+    <br />
+
+    <div class="table-responsive">
+        <h2>Mensagens Enviadas</h2>
+
+        <table class="table">
+            <tr>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Conteúdo
+                </th>
+                <th>
+                    Sub Título
+                </th>
+                <th>
+                    Link
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Messages)
+            {
+                <tr>
+                    <td>
+                        <img src="@Html.DisplayFor(modelItem => item.AppIcon)" style="width: 30px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubTitle)
+                    </td>
+                    <td>
+                        <a href="@Html.DisplayFor(modelItem => item.Url)">@Html.DisplayFor(modelItem => item.Url)</a>
+                    </td>
+                    <td>
+                        <a href="/Home/Message?appId=@item.AppId&restkey=@item.RestKey">
+                    </td>
+                </tr>
+            }
+
+        </table>
     </div>
 }

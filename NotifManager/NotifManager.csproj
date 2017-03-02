@@ -176,8 +176,8 @@
     <Content Include="Views\Home\Client.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_LayoutLoggedIn.cshtml" />
-    <Content Include="Views\Home\Message.cshtml" />
     <Content Include="Views\Home\MessageReply.cshtml" />
+    <Content Include="Views\Home\Message.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

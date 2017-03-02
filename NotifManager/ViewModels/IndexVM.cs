@@ -9,5 +9,6 @@ namespace NotifManager.ViewModels
     public class IndexVM
     {
         public List<App> Apps { get; set; }
+        public List<MessageVM> Messages { get; set; }
     }
 }

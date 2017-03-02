@@ -11,6 +11,7 @@ namespace NotifManager.ViewModels
     {
         public Guid Id { get; set; }
         public Guid AppId { get; set; }
+        public string RestKey { get; set; }
         public string AppName { get; set; }
         public string AppIcon { get; set; }
         public string Title { get; set; }
@@ -18,10 +19,11 @@ namespace NotifManager.ViewModels
         public string SubTitle { get; set; }
         public string Url { get; set; }
 
-        public MessageVM(Guid id, Guid appId, string appName, string appIcon, string title, string content, string subTitle, string url)
+        public MessageVM(Guid id, Guid appId, string restKey, string appName, string appIcon, string title, string content, string subTitle, string url)
         {
             Id = id;
             AppId = appId;
+            RestKey = restKey;
             AppName = appName;
             AppIcon = appIcon;
             Title = title;
