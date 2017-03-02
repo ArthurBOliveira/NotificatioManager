@@ -26,9 +26,9 @@ namespace NotifManager.Utility
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
 
-            string timezone = TimeZone.CurrentTimeZone.StandardName;
+            string timezone = "GMT-0300";
 
-            string scheduledDate = message.ScheduleDate != null ? message.ScheduleDate.ToString("yyyy-mm-dd hh:MM:ss") + " " + timezone : "";
+            string scheduledDate = message.ScheduleDate > DateTime.Now ? message.ScheduleDate.ToString("yyyy-MM-dd HH:mm:ss") + " " + timezone : "";
 
             object obj = new
             {

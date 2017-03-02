@@ -71,7 +71,7 @@
                     <td class="col-xs-1"><img style="width: 30px;" src="@app.Icon" /></td>
                     <td class="col-xs-4">@app.Name</td>
                     <td class="col-xs-4"><a href="@app.Url">@app.Url</a></td>
-                    <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Mensagem"><button class="btn btn-success btn-xs modalLink" data-id="@app.Id" data-title="Message" data-toggle="modal" data-target="#message"><span class="glyphicon glyphicon-send"></span></button></p>                       </td>
+                    <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Mensagem"><button class="btn btn-success btn-xs modalLink" data-id="@app.Id" data-title="Message" onclick="location.href='/Home/Message?appId=@app.Id&restkey=@app.RestKey'"><span class="glyphicon glyphicon-send"></span></button></p></td>
                     <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Editar"><button class="btn btn-primary btn-xs modalLink" data-id="@app.Id" data-title="Edit" data-toggle="modal" data-target="#edit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                     <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Deletar"><button class="btn btn-danger btn-xs modalLink" data-id="@app.Id" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                 </tr>
@@ -104,6 +104,11 @@
                     <div class="form-group">
                         <input class="form-control text-box single-line" id="SubTitle" name="SubTitle" type="text" value="" placeholder="Sub Título" />
                         <span class="field-validation-valid text-danger" data-valmsg-for="SubTitle" data-valmsg-replace="true"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input class="form-control text-box single-line" id="Url" name="Url" type="url" value="" placeholder="Link para Direcionamento" />
+                        <span class="field-validation-valid text-danger" data-valmsg-for="Url" data-valmsg-replace="true"></span>
                     </div>
 
                     <div class="form-group">
@@ -171,5 +176,64 @@
             <!-- /.modal-content -->
         </div>
         <!-- /.modal-dialog -->
+    </div>
+
+
+    <br />
+    <br />
+
+    <div class="table-responsive">
+        <h2>Mensagens Enviadas</h2>
+
+        <table class="table">
+            <tr>
+                <th>                    
+                </th>
+                <th>
+                    Aplicativo
+                </th>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Conteúdo
+                </th>
+                <th>
+                    Sub Título
+                </th>
+                <th>
+                    Link
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Messages)
+            {
+                <tr>
+                    <td>
+                        <img src="@Html.DisplayFor(modelItem => item.AppIcon)" style="width: 30px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Content)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubTitle)
+                    </td>
+                    <td>
+                        <a href="@Html.DisplayFor(modelItem => item.Url)">@Html.DisplayFor(modelItem => item.Url)</a>
+                    </td>
+                    <td>
+                        <p data-placement="top" data-toggle="tooltip" title="Detalhes"><button class="btn btn-primary btn-xs modalLink" data-title="Message" onclick="location.href='/Home/MessageReply?messageId=@item.Id&appId=@item.AppId'"><span class="glyphicon glyphicon-list"></span></button></p>
+                    </td>
+                </tr>
+            }
+
+        </table>
     </div>
 }

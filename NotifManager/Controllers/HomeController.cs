@@ -107,34 +107,34 @@ namespace NotifManager.Controllers
             }
         }
 
-        [AuthorizationFilter]
-        public ActionResult Message()
-        {
-            List<MessageVM> mvm = new List<MessageVM>();
-            List<Guid> appsId = new List<Guid>();
+        //[AuthorizationFilter]
+        //public ActionResult Message()
+        //{
+        //    List<MessageVM> mvm = new List<MessageVM>();
+        //    List<Guid> appsId = new List<Guid>();
 
-            IEnumerable<App> apps = _appRep.GetAppsByClient(_session.CurrentClient.Id);
+        //    IEnumerable<App> apps = _appRep.GetAppsByClient(_session.CurrentClient.Id);
 
-            foreach (App a in apps)
-            {
-                appsId.Add(a.Id);
-            }
+        //    foreach (App a in apps)
+        //    {
+        //        appsId.Add(a.Id);
+        //    }
 
-            IEnumerable<Message> messages = _messageRep.GetMessagesByApp((IEnumerable<Guid>)appsId);
+        //    IEnumerable<Message> messages = _messageRep.GetMessagesByApp((IEnumerable<Guid>)appsId);
 
-            List<App> appsAux = (List<App>)apps;
+        //    List<App> appsAux = (List<App>)apps;
 
-            foreach (Message m in messages)
-            {
-                App appAux = appsAux.Find(x => x.Id == m.AppId);
+        //    foreach (Message m in messages)
+        //    {
+        //        App appAux = appsAux.Find(x => x.Id == m.AppId);
 
-                MessageVM aux = new MessageVM(m.Id, m.AppId, appAux.RestKey, appAux.Name, appAux.Icon, m.Title, m.Content, m.SubTitle, m.Url);
+        //        MessageVM aux = new MessageVM(m.Id, m.AppId, appAux.RestKey, appAux.Name, appAux.Icon, m.Title, m.Content, m.SubTitle, m.Url);
 
-                mvm.Add(aux);
-            }
+        //        mvm.Add(aux);
+        //    }
 
-            return View(mvm);
-        }
+        //    return View(mvm);
+        //}
 
         [AuthorizationFilter]
         public ActionResult Message(Guid appId, string restKey)
@@ -152,28 +152,24 @@ namespace NotifManager.Controllers
         public ActionResult Message(Message message)
         {
             App app = _appRep.GetData<App>(message.AppId);
+
             if (app.ClientId == _session.CurrentClient.Id)
             {
-                message.RestKey = app.RestKey;
-
-                //message.AppId = new Guid("842a9d9d-e03c-4189-a651-0a55825a1b44");
-                //message.RestKey = "ZTcyY2NkYTktMjcwOS00M2U4LTllZTAtZTFhZmQ3ZWIzZWM1";
-
                 message = OneSignalAPI.PostMessage(message);
 
                 if (message.Id != Guid.Empty)
                 {
                     _messageRep.PostData<Message>(message);
-                    return Json("Enviada com sucesso!");
+                    return View(message);
                 }
                 else
                 {
-                    return Json("Não existe pessoas inscritas.");
+                    return View(message);
                 }
             }
             else
             {
-                return Json("Você não pode acessar este Aplicativo.");
+                return View(message);
             }
         }
 
@@ -184,7 +180,7 @@ namespace NotifManager.Controllers
 
             if (app.ClientId == _session.CurrentClient.Id)
             {
-                MessageReply reply = OneSignalAPI.GetMessage(messageId, appId, "ZTcyY2NkYTktMjcwOS00M2U4LTllZTAtZTFhZmQ3ZWIzZWM1");
+                MessageReply reply = OneSignalAPI.GetMessage(messageId, appId, app.RestKey);
 
                 return View(reply);
             }
