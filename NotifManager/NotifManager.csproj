@@ -145,6 +145,7 @@
     </Compile>
     <Compile Include="Models\App.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Device.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\MessageReply.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -178,6 +179,7 @@
     <Content Include="Views\Shared\_LayoutLoggedIn.cshtml" />
     <Content Include="Views\Home\MessageReply.cshtml" />
     <Content Include="Views\Home\Message.cshtml" />
+    <Content Include="Views\Home\Device.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -62,6 +62,7 @@
                     <td>Editar</td>
                     <td>Deletar</td>
                     <td>Gerar CSV</td>
+                    <td>Dispositivos</td>
                 </tr>
             </thead>
 
@@ -76,6 +77,7 @@
                     <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Editar"><button class="btn btn-primary btn-xs modalLink" data-id="@app.Id" data-title="Edit" data-toggle="modal" data-target="#edit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
                     <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Deletar"><button class="btn btn-danger btn-xs modalLink" data-id="@app.Id" data-title="Delete" data-toggle="modal" data-target="#delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>
                     <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Gerar CSV"><button class="btn btn-warning btn-xs" data-id="@app.Id" data-title="Delete" onclick="location.href='/Home/GenerateCSV?appid=@app.Id'"><span class="glyphicon glyphicon-list"></span></button></p></td>
+                    <td class="col-xs-1"><p data-placement="top" data-toggle="tooltip" title="Dispositivos"><button class="btn btn-toolbar btn-xs" data-id="@app.Id" data-title="Dispositivos" onclick="location.href='/Home/Device?appid=@app.Id'"><span class="glyphicon glyphicon-list"></span></button></p></td>
                 </tr>
                 }
             </tbody>

@@ -215,6 +215,23 @@ namespace NotifManager.Controllers
         }
 
         [AuthorizationFilter]
+        public ActionResult Device(Guid appId)
+        {
+            App app = _appRep.GetData<App>(appId);
+
+            if (app.ClientId == _session.CurrentClient.Id)
+            {
+                List<Device> devices = OneSignalAPI.ListDevice(app.Id, app.RestKey);
+
+                return View(devices);
+            }
+            else
+            {
+                return View("Index", CurrentIndex(_session.CurrentClient.Id));
+            }
+        }
+
+        [AuthorizationFilter]
         public ActionResult GenerateCSV(Guid appId)
         {
             string url;

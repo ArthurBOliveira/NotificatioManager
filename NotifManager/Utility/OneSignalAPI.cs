@@ -239,6 +239,93 @@ namespace NotifManager.Utility
         }
         #endregion
 
+        #region Device
+        public static List<Device> ListDevice(Guid appId, string RestKey)
+        {
+            List<Device> result = new List<Device>();
+
+            var request = WebRequest.Create("https://onesignal.com/api/v1/players?app_id=" + appId + "&limit=300&offset=0") as HttpWebRequest;
+
+            request.KeepAlive = true;
+            request.Method = "Get";
+            request.ContentType = "application/json; charset=utf-8";
+
+            request.Headers.Add("authorization", "Basic " + RestKey);
+
+            string responseContent = null;
+
+            try
+            {
+                using (var response = request.GetResponse() as HttpWebResponse)
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseContent = reader.ReadToEnd();
+                    }
+                }
+
+
+                Device dev = new Device();
+                string[] device, aux = responseContent.Split(new string[] { "\"players\":[" }, StringSplitOptions.None);
+
+                aux = aux[1].Split('{');
+
+                for (int i = 1; i < aux.Length; i += 2)
+                {
+                    device = aux[i].Split('"');
+
+                    dev.Id = new Guid(device[3]);
+                    dev.SessionCount = int.Parse(device[10].Replace(":", "").Replace(",", ""));
+                    dev.DeviceOS = device[21];
+                    dev.DeviceModel = device[27];
+
+                    switch (device[24])
+                    {
+                        case ":0,":
+                            dev.DeviceType = "iOS";
+                            break;
+                        case ":1,":
+                            dev.DeviceType = "ANDROID";
+                            break;
+                        case ":2,":
+                            dev.DeviceType = "AMAZON";
+                            break;
+                        case ":3,":
+                            dev.DeviceType = "WINDOWSPHONE (MPNS)";
+                            break;
+                        case ":4,":
+                            dev.DeviceType = "CHROME APPS / EXTENSIONS";
+                            break;
+                        case ":5,":
+                            dev.DeviceType = "CHROME WEB PUSH";
+                            break;
+                        case ":6,":
+                            dev.DeviceType = "WINDOWSPHONE (WNS)";
+                            break;
+                        case ":7,":
+                            dev.DeviceType = "SAFARI";
+                            break;
+                        case ":8,":
+                            dev.DeviceType = "FIREFOX";
+                            break;
+                        case ":9,":
+                            dev.DeviceType = "MACOS";
+                            break;
+                    }
+
+                    result.Add(dev);
+                    dev = new Device();
+                }
+            }
+            catch (WebException ex)
+            {
+                responseContent = ex.Message;
+            }
+
+            return result;
+        }
+        #endregion
+
         #region CSV
         public static string GenerateCSV(Guid appId, string restKey)
         {
