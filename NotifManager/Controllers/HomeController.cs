@@ -214,6 +214,24 @@ namespace NotifManager.Controllers
                 return View();
         }
 
+        [AuthorizationFilter]
+        public ActionResult GenerateCSV(Guid appId)
+        {
+            string url;
+            App app = _appRep.GetData<App>(appId);
+
+            if (app.ClientId == _session.CurrentClient.Id)
+            {
+                url = OneSignalAPI.GenerateCSV(app.Id, app.RestKey);
+
+                return Redirect(url);
+            }
+            else
+            {
+                return View("Index", CurrentIndex(_session.CurrentClient.Id));
+            }            
+        }
+
         [NonAction]
         private IndexVM CurrentIndex(Guid id)
         {

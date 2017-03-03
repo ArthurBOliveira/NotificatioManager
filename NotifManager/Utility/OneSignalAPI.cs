@@ -238,5 +238,45 @@ namespace NotifManager.Utility
             return a;
         }
         #endregion
+
+        #region CSV
+        public static string GenerateCSV(Guid appId, string restKey)
+        {
+            string result = "";
+
+            var request = WebRequest.Create("https://onesignal.com/api/v1/players/csv_export?app_id=" + appId) as HttpWebRequest;
+
+            request.KeepAlive = true;
+            request.Method = "Post";
+            request.ContentType = "application/json; charset=utf-8";
+
+            request.Headers.Add("authorization", "Basic " + restKey);
+
+            string responseContent = null;
+
+            try
+            {
+                using (var response = request.GetResponse() as HttpWebResponse)
+                {
+                    using (var reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        responseContent = reader.ReadToEnd();
+                    }
+                }
+
+                string[] aux = responseContent.Split('"');
+
+                if (aux.Length > 0)
+                    result = aux[3];
+            }
+            catch (WebException ex)
+            {
+                responseContent = ex.Message;
+                result = "";
+            }
+
+            return result;
+        }
+        #endregion
     }
 }
