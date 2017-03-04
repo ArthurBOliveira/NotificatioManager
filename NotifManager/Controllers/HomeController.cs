@@ -85,7 +85,10 @@ namespace NotifManager.Controllers
             {
                 if (_session.CurrentClient.Id != Guid.Empty)
                 {
+                    Random rg = new Random();
+
                     app.SubDomain = app.Name.Replace(" ", "").ToLower();
+                    app.SubDomain = app.SubDomain + rg.Next().ToString();
 
                     app.ClientId = _session.CurrentClient.Id;
 
