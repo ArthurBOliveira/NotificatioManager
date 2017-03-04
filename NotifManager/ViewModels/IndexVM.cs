@@ -10,5 +10,6 @@ namespace NotifManager.ViewModels
     {
         public List<App> Apps { get; set; }
         public List<MessageVM> Messages { get; set; }
+        public bool isPremium { get; set; }
     }
 }

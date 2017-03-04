@@ -33,6 +33,7 @@ namespace NotifManager.Models
         [Display(Name = "Confirmar Senha")]
         public string ConfirmPassword { get; set; }
 
-
+        [Display(Name = "Tipo de Usuário")]
+        public string Type { get; set; }
     }
 }

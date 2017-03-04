@@ -85,24 +85,27 @@ namespace NotifManager.Controllers
             {
                 if (_session.CurrentClient.Id != Guid.Empty)
                 {
-                    Random rg = new Random();
+                    if (_session.CurrentClient.Type == "Premium" || ((List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id)).Count() < 1)
+                    {
+                        Random rg = new Random();
 
-                    app.SubDomain = app.Name.Replace(" ", "").ToLower();
-                    app.SubDomain = app.SubDomain + rg.Next().ToString();
+                        app.SubDomain = app.Name.Replace(" ", "").ToLower();
+                        app.SubDomain = app.SubDomain + rg.Next().ToString();
 
-                    app.ClientId = _session.CurrentClient.Id;
+                        app.ClientId = _session.CurrentClient.Id;
 
-                    app = OneSignalAPI.PostApp(app);
+                        app = OneSignalAPI.PostApp(app);
 
-                    if (app.Id != Guid.Empty)
-                        _appRep.PostData<App>(app);
+                        if (app.Id != Guid.Empty)
+                            _appRep.PostData<App>(app);
 
-                    return View("Index", CurrentIndex(app.ClientId));
+                        return View("Index", CurrentIndex(app.ClientId));
+                    }
+                    else
+                        return View();
                 }
                 else
-                {
                     return View();
-                }
             }
             else
             {
@@ -205,6 +208,8 @@ namespace NotifManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                client.Type = "Comum";
+
                 client.Id = Guid.NewGuid();
 
                 client.Password = Hash.CreateHash(client.Password);
@@ -249,7 +254,7 @@ namespace NotifManager.Controllers
             else
             {
                 return View("Index", CurrentIndex(_session.CurrentClient.Id));
-            }            
+            }
         }
 
         [NonAction]
@@ -280,6 +285,8 @@ namespace NotifManager.Controllers
             }
 
             ivm.Messages = mvm;
+
+            ivm.isPremium = _session.CurrentClient.Type == "Premium" || ivm.Apps.Count() < 1;
 
             return ivm;
         }

@@ -84,7 +84,10 @@
         </table>
     </div>
 
-    <input type="button" value="Criar Aplicativo" onclick="location.href='/home/app';" class="btn btn-default" />
+    if (Model.isPremium)
+    {
+        <input type="button" value="Criar Aplicativo" onclick="location.href='/home/app';" class="btn btn-default" />
+    }
 
     <div class="modal fade" id="message" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
         <div class="modal-dialog">
