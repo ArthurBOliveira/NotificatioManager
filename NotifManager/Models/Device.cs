@@ -12,6 +12,7 @@ namespace NotifManager.Models
         public string DeviceType { get; set; }
         public string DeviceModel { get; set; }
         public string DeviceOS { get; set; }
+        public DateTime CreatedDate { get; set; }
         public DateTime LastActive { get; set; }
     }
 }

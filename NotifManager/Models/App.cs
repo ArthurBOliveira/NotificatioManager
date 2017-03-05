@@ -29,5 +29,6 @@ namespace NotifManager.Models
         public string RestKey { get; set; }
         public string Log { get; set; }
         public Guid SafariId { get; set; }
+        public bool IsHttps { get; set; }
     }
 }

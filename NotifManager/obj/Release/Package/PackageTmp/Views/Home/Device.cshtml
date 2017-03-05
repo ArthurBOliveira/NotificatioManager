@@ -5,11 +5,8 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
-<h2>Device</h2>
+<h2>Usuários cadastrados</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -23,6 +20,9 @@
         </th>
         <th>
             Sistema
+        </th>
+        <th>
+            Inscrito
         </th>
         <th>
             Última vez Ativo
@@ -44,7 +44,10 @@
             @Html.DisplayFor(modelItem => item.DeviceModel) - @Html.DisplayFor(modelItem => item.DeviceOS)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastActive)
+            @item.CreatedDate.ToString("dd/MM/yyyy")
+        </td>
+        <td>
+            @item.LastActive.ToString("dd/MM/yyyy")
         </td>
     </tr>
 }

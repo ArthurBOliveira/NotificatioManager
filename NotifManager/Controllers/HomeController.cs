@@ -89,8 +89,15 @@ namespace NotifManager.Controllers
                     {
                         Random rg = new Random();
 
-                        app.SubDomain = app.Name.Replace(" ", "").ToLower();
-                        app.SubDomain = app.SubDomain + rg.Next().ToString();
+                        app.Url = app.Url[app.Url.Length] == '/' ? app.Url.Substring(0, app.Url.Length - 1) : app.Url;
+
+                        app.IsHttps = app.Url.Contains("https");
+
+                        if (!app.IsHttps)
+                        {
+                            app.SubDomain = app.Name.Replace(" ", "").ToLower();
+                            app.SubDomain = app.SubDomain + rg.Next().ToString();
+                        }
 
                         app.ClientId = _session.CurrentClient.Id;
 
@@ -111,6 +118,27 @@ namespace NotifManager.Controllers
             {
                 return View();
             }
+        }
+
+        //[HttpPost]
+        [AuthorizationFilter]
+        public JsonResult DeleteApp(Guid id)
+        {
+            if (_session.CurrentClient.Id != Guid.Empty)
+            {
+                App app =_appRep.GetData<App>(id);
+
+                if (app.ClientId == _session.CurrentClient.Id)
+                {
+                    _appRep.DeleteData<App>(id);
+                    
+                    return Json("Sucesso!");
+                }
+                else
+                    return Json("Você não tem Permissão para Excluir esse Aplicativo!");
+            }
+            else
+                return Json("Erro!");
         }
 
         //[AuthorizationFilter]
@@ -214,9 +242,13 @@ namespace NotifManager.Controllers
 
                 client.Password = Hash.CreateHash(client.Password);
 
-                _clientRep.PostData<Client>(client);
-
-                return View(client);
+                if (_clientRep.PostData<Client>(client))
+                {
+                    _session.CurrentClient = client;
+                    return RedirectToAction("Index", CurrentIndex(client.Id));
+                }
+                else
+                    return View(client);
             }
             else
                 return View();

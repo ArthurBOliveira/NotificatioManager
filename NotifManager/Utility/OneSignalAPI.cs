@@ -135,18 +135,37 @@ namespace NotifManager.Utility
             request.Headers.Add("authorization", "Basic " + WebConfigurationManager.AppSettings["UserAuthKey"]);
 
             JavaScriptSerializer serializer = new JavaScriptSerializer();
-            object obj = new
+            object obj;
+
+            if (!a.IsHttps)
             {
-                name = a.Name,
-                chrome_web_origin = a.Url,
-                chrome_web_default_notification_icon = a.Icon,
-                chrome_web_sub_domain = a.SubDomain,
-                safari_apns_p12 = "",
-                safari_apns_p12_password = "",
-                site_name = a.Url,
-                safari_site_origin = a.Url,
-                safari_icon_256_256 = a.Icon
-            };
+                obj = new
+                {
+                    name = a.Name,
+                    chrome_web_origin = a.Url,
+                    chrome_web_default_notification_icon = a.Icon,
+                    chrome_web_sub_domain = a.SubDomain,
+                    safari_apns_p12 = "",
+                    safari_apns_p12_password = "",
+                    site_name = a.Url,
+                    safari_site_origin = a.Url,
+                    safari_icon_256_256 = a.Icon
+                };
+            }
+            else
+            {
+                obj = new
+                {
+                    name = a.Name,
+                    chrome_web_origin = a.Url,
+                    chrome_web_default_notification_icon = a.Icon,
+                    safari_apns_p12 = "",
+                    safari_apns_p12_password = "",
+                    site_name = a.Url,
+                    safari_site_origin = a.Url,
+                    safari_icon_256_256 = a.Icon
+                };
+            }
             string param = serializer.Serialize(obj);
             byte[] byteArray = Encoding.UTF8.GetBytes(param);
 
@@ -272,12 +291,22 @@ namespace NotifManager.Utility
 
                 for (int i = 1; i < aux.Length; i += 2)
                 {
-                    device = aux[i].Split('"');
+                    device = (aux[i] + aux[i + 1]).Split('"');
+
+                    long miliseconds;
 
                     dev.Id = new Guid(device[3]);
                     dev.SessionCount = int.Parse(device[10].Replace(":", "").Replace(",", ""));
                     dev.DeviceOS = device[21];
                     dev.DeviceModel = device[27];
+
+                    miliseconds = long.Parse(device[40].Replace(":", "").Replace(",", ""));
+                    dev.CreatedDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    dev.CreatedDate = dev.CreatedDate.AddSeconds(miliseconds).ToLocalTime();
+
+                    miliseconds = long.Parse(device[34].Replace(":", "").Replace(",", ""));
+                    dev.LastActive = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    dev.LastActive = dev.LastActive.AddSeconds(miliseconds).ToLocalTime();
 
                     switch (device[24])
                     {
@@ -365,5 +394,56 @@ namespace NotifManager.Utility
             return result;
         }
         #endregion
+
+        public static string GenerateScript(App app)
+        {
+            string result = "";
+
+
+            result += "<script>\r\n";
+            result += "var OneSignal = window.OneSignal || [];\r\n";
+            result += "OneSignal.push([\"init\", {\r\n";
+            result += "appId: \"" + app.Id + "\",\r\n";
+            result += "autoRegister: true,\r\n";
+            if (!app.IsHttps)
+                result += "subdomainName: '" + app.SubDomain + "',\r\n";
+            result += "httpPermissionRequest:\r\n";
+            result += "{\r\n";
+            result += "enable: true\r\n";
+            result += "},\r\n";
+            result += "notifyButton:\r\n";
+            result += "{\r\n";
+            result += "enable: true\r\n";
+            result += "},\r\n";
+            result += "promptOptions:\r\n";
+            result += "{\r\n";
+            result += "siteName: '" + app.Name + "',\r\n";
+            result += "actionMessage: \"Nos permita mostrar notificações sobre o nosso conteúdo\",\r\n";
+            result += "exampleNotificationTitle: 'Título',\r\n";
+            result += "exampleNotificationMessage: 'Mensagem',\r\n";
+            result += "exampleNotificationCaption: 'Você pode cancelar a inscrição a qualquer momento.',\r\n";
+            result += "acceptButtonText: \"Permitir\",\r\n";
+            result += "cancelButtonText: \"Não Obrigado\",\r\n";
+            result += "safari_web_id: '" + app.SafariId + "'\r\n";
+            result += "},\r\n";
+            result += "welcomeNotification:\r\n";
+            result += "{\r\n";
+            result += "disable: false,\r\n";
+            result += "title: 'Bem-vindo',\r\n";
+            result += "message: 'Obrigado por se inscrever.'\r\n";
+            result += "},\r\n";
+            result += "httpPermissionRequest:\r\n";
+            result += "{\r\n";
+            result += "enable: true,\r\n";
+            result += "modalTitle: 'Fique por dentro',\r\n";
+            result += "modalMessage: 'Seja alertado sempre que algo grande aconteça.',\r\n";
+            result += "modalButtonText: 'Eu quero saber mais!'\r\n";
+            result += "}\r\n";
+            result += "}\r\n";
+            result += "]);\r\n";
+            result += "</script>\r\n";
+
+            return result;
+        }
     }
 }
