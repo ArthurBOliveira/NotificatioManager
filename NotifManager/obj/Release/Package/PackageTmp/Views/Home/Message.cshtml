@@ -5,6 +5,15 @@
     Layout = "~/Views/Shared/_LayoutLoggedIn.cshtml";
 }
 
+<link href="~/Content/jquery.datetimepicker.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.datetimepicker.full.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.date-picker').datetimepicker({ value: new Date($.now()), format: $("#datetimepicker_format_value").val() });
+    });
+</script>
+
 <h2>Enviar Mensagem</h2>
 
 @using (Html.BeginForm()) 
@@ -51,7 +60,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ScheduleDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleDate, new { htmlAttributes = new { @class = "form-control" } })
+                <input class="form-control date-picker" data-val="true" data-val-date="The field Agendar must be a date." data-val-required="The Agendar field is required." id="ScheduleDate" name="ScheduleDate" type="datetime" value="">
                 @Html.ValidationMessageFor(model => model.ScheduleDate, "", new { @class = "text-danger" })
             </div>
         </div>

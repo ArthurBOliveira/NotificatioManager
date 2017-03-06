@@ -5,8 +5,10 @@ using NotifManager.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace NotifManager.Controllers
 {
@@ -49,18 +51,33 @@ namespace NotifManager.Controllers
         [AllowAnonymous]
         public ActionResult Login(Client c)
         {
-            Client clientLogged = _clientRep.GetClientByEmail(c.Email);
+            var response = Request["g-recaptcha-response"];
+            //secret that was generated in key value pair
+            const string secret = "6LeZshcUAAAAAMny_kt29xty2lncFqJGuUF_dtkL";
 
-            if (clientLogged != null && Hash.ValidatePassword(c.Password, clientLogged.Password))
+            var client = new WebClient();
+            var reply = client.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, response));
+
+            var captchaResponse = JsonConvert.DeserializeObject<ReCaptchaValidator>(reply);
+
+            if (captchaResponse.Success != "false")
             {
-                _session.CurrentClient = clientLogged;
 
-                return View("Index", CurrentIndex(clientLogged.Id));
+                Client clientLogged = _clientRep.GetClientByEmail(c.Email);
+
+                if (clientLogged != null && Hash.ValidatePassword(c.Password, clientLogged.Password))
+                {
+                    _session.CurrentClient = clientLogged;
+
+                    return View("Index", CurrentIndex(clientLogged.Id));
+                }
+                else
+                {
+                    return View();
+                }
             }
             else
-            {
                 return View();
-            }
         }
 
         [AuthorizationFilter]
@@ -81,38 +98,55 @@ namespace NotifManager.Controllers
         [AuthorizationFilter]
         public ActionResult App(App app)
         {
-            if (ModelState.IsValid)
+            var response = Request["g-recaptcha-response"];
+            //secret that was generated in key value pair
+            const string secret = "6LeZshcUAAAAAMny_kt29xty2lncFqJGuUF_dtkL";
+
+            var webClient = new WebClient();
+            var reply = webClient.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, response));
+
+            var captchaResponse = JsonConvert.DeserializeObject<ReCaptchaValidator>(reply);
+
+            if (captchaResponse.Success != "false")
             {
-                if (_session.CurrentClient.Id != Guid.Empty)
+
+                if (ModelState.IsValid)
                 {
-                    if (_session.CurrentClient.Type == "Premium" || ((List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id)).Count() < 1)
+                    if (_session.CurrentClient.Id != Guid.Empty)
                     {
-                        Random rg = new Random();
-
-                        app.Url = app.Url[app.Url.Length] == '/' ? app.Url.Substring(0, app.Url.Length - 1) : app.Url;
-
-                        app.IsHttps = app.Url.Contains("https");
-
-                        if (!app.IsHttps)
+                        if (_session.CurrentClient.Type == "Premium" || ((List<App>)_appRep.GetAppsByClient(_session.CurrentClient.Id)).Count() < 1)
                         {
-                            app.SubDomain = app.Name.Replace(" ", "").ToLower();
-                            app.SubDomain = app.SubDomain + rg.Next().ToString();
+                            Random rg = new Random();
+
+                            app.Url = app.Url[app.Url.Length - 1] == '/' ? app.Url.Substring(0, app.Url.Length - 1) : app.Url;
+
+                            app.IsHttps = app.Url.Contains("https");
+
+                            if (!app.IsHttps)
+                            {
+                                app.SubDomain = app.Name.Replace(" ", "").ToLower();
+                                app.SubDomain = app.SubDomain + rg.Next().ToString();
+                            }
+
+                            app.ClientId = _session.CurrentClient.Id;
+
+                            app = OneSignalAPI.PostApp(app);
+
+                            if (app.Id != Guid.Empty)
+                                _appRep.PostData<App>(app);
+
+                            return View("Index", CurrentIndex(app.ClientId));
                         }
-
-                        app.ClientId = _session.CurrentClient.Id;
-
-                        app = OneSignalAPI.PostApp(app);
-
-                        if (app.Id != Guid.Empty)
-                            _appRep.PostData<App>(app);
-
-                        return View("Index", CurrentIndex(app.ClientId));
+                        else
+                            return View();
                     }
                     else
                         return View();
                 }
                 else
+                {
                     return View();
+                }
             }
             else
             {
@@ -126,12 +160,12 @@ namespace NotifManager.Controllers
         {
             if (_session.CurrentClient.Id != Guid.Empty)
             {
-                App app =_appRep.GetData<App>(id);
+                App app = _appRep.GetData<App>(id);
 
                 if (app.ClientId == _session.CurrentClient.Id)
                 {
                     _appRep.DeleteData<App>(id);
-                    
+
                     return Json("Sucesso!");
                 }
                 else
@@ -234,21 +268,35 @@ namespace NotifManager.Controllers
         [AllowAnonymous]
         public ActionResult Client(Client client)
         {
-            if (ModelState.IsValid)
+            var response = Request["g-recaptcha-response"];
+            //secret that was generated in key value pair
+            const string secret = "6LeZshcUAAAAAMny_kt29xty2lncFqJGuUF_dtkL";
+
+            var webClient = new WebClient();
+            var reply = webClient.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, response));
+
+            var captchaResponse = JsonConvert.DeserializeObject<ReCaptchaValidator>(reply);
+
+            if (captchaResponse.Success != "false")
             {
-                client.Type = "Comum";
-
-                client.Id = Guid.NewGuid();
-
-                client.Password = Hash.CreateHash(client.Password);
-
-                if (_clientRep.PostData<Client>(client))
+                if (ModelState.IsValid)
                 {
-                    _session.CurrentClient = client;
-                    return RedirectToAction("Index", CurrentIndex(client.Id));
+                    client.Type = "Comum";
+
+                    client.Id = Guid.NewGuid();
+
+                    client.Password = Hash.CreateHash(client.Password);
+
+                    if (_clientRep.PostData<Client>(client))
+                    {
+                        _session.CurrentClient = client;
+                        return RedirectToAction("Index", CurrentIndex(client.Id));
+                    }
+                    else
+                        return View(client);
                 }
                 else
-                    return View(client);
+                    return View();
             }
             else
                 return View();

@@ -94,3 +94,5 @@ C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\bin\System.Web.
 C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\obj\Release\NotifManager.csprojResolveAssemblyReference.cache
 C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\obj\Release\NotifManager.dll
 C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\obj\Release\NotifManager.pdb
+C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\bin\Newtonsoft.Json.dll
+C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\bin\Newtonsoft.Json.xml
