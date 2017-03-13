@@ -154,6 +154,13 @@ namespace NotifManager.Controllers
             }
         }
 
+        public JsonResult UpdateApp(Guid id, string name, string url)
+        {
+
+
+            return Json("");
+        }
+
         //[HttpPost]
         [AuthorizationFilter]
         public JsonResult DeleteApp(Guid id)
