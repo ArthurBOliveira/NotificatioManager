@@ -11,6 +11,8 @@ namespace NotifManager
     {
         protected void Application_Start()
         {
+            //GlobalFilters.Filters.Add(new RequireHttpsAttribute());
+
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

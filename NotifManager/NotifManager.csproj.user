@@ -9,7 +9,8 @@
     <WebStackScaffolding_LayoutPageFile>~/Views/Shared/_LayoutLoggedIn.cshtml</WebStackScaffolding_LayoutPageFile>
     <WebStackScaffolding_IsAsyncSelected>False</WebStackScaffolding_IsAsyncSelected>
     <WebStackScaffolding_ViewDialogWidth>600</WebStackScaffolding_ViewDialogWidth>
-    <NameOfLastUsedPublishProfile>NotificationManager - Web Deploy</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>Local</NameOfLastUsedPublishProfile>
+    <IISExpressSSLPort>44342</IISExpressSSLPort>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>

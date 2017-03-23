@@ -41,6 +41,7 @@ namespace NotifManager.Controllers
                 return View();
         }
 
+        [RequireHttps]
         [AllowAnonymous]
         public ActionResult Login()
         {
@@ -293,6 +294,7 @@ namespace NotifManager.Controllers
                     client.Id = Guid.NewGuid();
 
                     client.Password = Hash.CreateHash(client.Password);
+                    client.ConfirmPassword = "";
 
                     if (_clientRep.PostData<Client>(client))
                     {
@@ -337,6 +339,24 @@ namespace NotifManager.Controllers
                 url = OneSignalAPI.GenerateCSV(app.Id, app.RestKey);
 
                 return Redirect(url);
+            }
+            else
+            {
+                return View("Index", CurrentIndex(_session.CurrentClient.Id));
+            }
+        }
+
+        [AuthorizationFilter]
+        public ActionResult AppScript(Guid appId)
+        {
+            string script;
+            App app = _appRep.GetData<App>(appId);
+
+            if (app.ClientId == _session.CurrentClient.Id)
+            {
+                script = OneSignalAPI.GenerateScript(app);
+
+                return View("AppScript", "_LayoutLoggedIn", script);
             }
             else
             {

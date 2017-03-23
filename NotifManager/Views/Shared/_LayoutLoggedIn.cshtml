@@ -4,18 +4,61 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="~/Images/Message.ico">
-    <title>Notification Manager</title>
+    <title>AstroPush</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-    <script src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="~/Scripts/canvasjs.min.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <!-- jQuery UI CSS Reference -->
     <link href="@Url.Content("~/Content/themes/base/jquery-ui.min.css")" rel="stylesheet" />
     <!-- Required jQuery and jQuery UI Javascript references -->
     <script src="@Url.Content("~/Scripts/jquery-1.12.4.min.js")"></script>
     <script src="@Url.Content("~/Scripts/jquery-ui-1.12.min.js")"></script>
+
+    @* Notif Push *@
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(["init", {
+            appId: "bbda0de5-293f-45f1-9a08-89c6b869ef66",
+            autoRegister: true,
+            httpPermissionRequest:
+            {
+                enable: true
+            },
+            notifyButton:
+            {
+                enable: true
+            },
+            promptOptions:
+            {
+                siteName: 'AstroPush',
+                actionMessage: "Nos permita mostrar notificações sobre o nosso conteúdo",
+                exampleNotificationTitle: 'Título',
+                exampleNotificationMessage: 'Mensagem',
+                exampleNotificationCaption: 'Você pode cancelar a inscrição a qualquer momento.',
+                acceptButtonText: "Permitir",
+                cancelButtonText: "Não Obrigado",
+                safari_web_id: '31ca14f2-9a64-44ce-b1fb-164017f55430'
+            },
+            welcomeNotification:
+            {
+                disable: false,
+                title: 'Bem-vindo',
+                message: 'Obrigado por se inscrever.'
+            },
+            httpPermissionRequest:
+            {
+                enable: true,
+                modalTitle: 'Fique por dentro',
+                modalMessage: 'Seja alertado sempre que algo grande aconteça.',
+                modalButtonText: 'Eu quero saber mais!'
+            }
+        }
+        ]);
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -26,12 +69,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Notification Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("AstroPush", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    
-                </ul>
+                <ul class="nav navbar-nav"></ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a>Bem-vindo(a)</a></li>
                     <li>@Html.ActionLink("Sair", "Logout", "Home")</li>
@@ -44,7 +85,17 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Notification Manager</p>
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+            <!-- AstroPush -->
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-8858452918865308"
+                 data-ad-slot="5383472879"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+            <p>&copy; @DateTime.Now.Year - AstroPush</p>
         </footer>
     </div>
 </body>

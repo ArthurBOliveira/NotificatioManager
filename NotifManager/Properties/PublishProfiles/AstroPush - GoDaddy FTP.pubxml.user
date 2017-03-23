@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAG/qes5jnd0uqEwAJHnr4QAAAAAACAAAAAAADZgAAwAAAABAAAACPH+YBOxiZXpBxc4T64bgQAAAAAASAAACgAAAAEAAAAO1Dgctd/D6ZG2ul2MBomBIYAAAAtdVUM3ZoPNOhz9oi8s1BUaF/QLWx7Ru7FAAAAFTt6qxCgzBBmjtoW4QreBI+ZdSb</EncryptedPassword>
+    <_PublishTargetUrl>ftp://184.168.224.181/httpdocs</_PublishTargetUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="ApplicationInsights.config">
+      <publishTime>03/12/2017 22:56:32</publishTime>
+    </File>
+    <File Include="bin/ApplicationInsights.config">
+      <publishTime>03/12/2017 22:56:32</publishTime>
+    </File>
+    <File Include="bin/Dapper.dll">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AI.Agent.Intercept.dll">
+      <publishTime>03/12/2017 22:56:37</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AI.DependencyCollector.dll">
+      <publishTime>03/12/2017 22:56:37</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AI.PerfCounterCollector.dll">
+      <publishTime>03/12/2017 22:56:37</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AI.ServerTelemetryChannel.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AI.Web.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.AI.WindowsServer.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.ApplicationInsights.dll">
+      <publishTime>03/12/2017 22:56:37</publishTime>
+    </File>
+    <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/NotifManager.dll">
+      <publishTime>03/20/2017 19:34:52</publishTime>
+    </File>
+    <File Include="bin/roslyn/csc.exe">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.Build.Tasks.CodeAnalysis.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.CSharp.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.dll">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CodeAnalysis.VisualBasic.dll">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.CSharp.Core.targets">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/Microsoft.VisualBasic.Core.targets">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Collections.Immutable.dll">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/System.Reflection.Metadata.dll">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/vbc.exe">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/roslyn/VBCSCompiler.exe.config">
+      <publishTime>03/12/2017 22:56:39</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.Deployment.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="bin/System.Web.Webpages.Razor.dll">
+      <publishTime>03/12/2017 22:56:38</publishTime>
+    </File>
+    <File Include="Content/app.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/bootstrap.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/jquery.datetimepicker.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/Site.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/accordion.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/all.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/autocomplete.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/base.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/button.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/core.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/datepicker.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/dialog.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/draggable.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_flat_0_aaaaaa_40x100.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_flat_75_ffffff_40x100.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_55_fbf9ee_1x400.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_65_ffffff_1x400.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_75_dadada_1x400.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_75_e6e6e6_1x400.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_glass_95_fef1ec_1x400.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-bg_highlight-soft_75_cccccc_1x100.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_222222_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_2e83ff_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_444444_256x240.png">
+      <publishTime>12/03/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_454545_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_555555_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_777620_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_777777_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_888888_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_cc0000_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_cd0a0a_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/images/ui-icons_ffffff_256x240.png">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery-ui.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/jquery-ui.min.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/menu.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/progressbar.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/resizable.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/selectable.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/selectmenu.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/slider.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/sortable.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/spinner.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/tabs.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/theme.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Content/themes/base/tooltip.css">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.eot">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.svg">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.ttf">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="fonts/glyphicons-halflings-regular.woff">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="Images/Message.ico">
+      <publishTime>03/12/2017 22:56:33</publishTime>
+    </File>
+    <File Include="packages.config">
+      <publishTime>03/12/2017 22:56:35</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js">
+      <publishTime>03/12/2017 22:56:35</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js">
+      <publishTime>03/12/2017 22:56:35</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.12.4.js">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.12.4.min.js">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-1.12.4.min.map">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.12.1.min.js">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery-ui-1.12.min.js">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Scripts/jquery.datetimepicker.full.js">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Scripts/modernizr-2.6.2.js">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/App.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/Client.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/Device.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/Index.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/Login.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/Message.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Home/MessageReply.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/Shared/_Layout.cshtml">
+      <publishTime>03/20/2017 19:33:50</publishTime>
+    </File>
+    <File Include="Views/Shared/_LayoutLoggedIn.cshtml">
+      <publishTime>03/20/2017 19:34:10</publishTime>
+    </File>
+    <File Include="Views/web.config">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Views/_ViewStart.cshtml">
+      <publishTime>03/12/2017 22:56:36</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>03/20/2017 19:34:58</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

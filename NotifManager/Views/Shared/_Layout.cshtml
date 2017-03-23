@@ -4,18 +4,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="~/Images/Message.ico">
-    <title>Notification Manager</title>
+    <title>AstroPush</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
 
-    @* Facebook API *@    
+    @* Facebook API *@
     <script>
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
@@ -24,6 +24,49 @@
             js.src = "//connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v2.8&appId=261649777620814";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));</script>
+
+    @* Notif Push *@
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+    <script>
+        var OneSignal = window.OneSignal || [];
+        OneSignal.push(["init", {
+            appId: "bbda0de5-293f-45f1-9a08-89c6b869ef66",
+            autoRegister: true,
+            httpPermissionRequest:
+            {
+                enable: true
+            },
+            notifyButton:
+            {
+                enable: true
+            },
+            promptOptions:
+            {
+                siteName: 'AstroPush',
+                actionMessage: "Nos permita mostrar notificações sobre o nosso conteúdo",
+                exampleNotificationTitle: 'Título',
+                exampleNotificationMessage: 'Mensagem',
+                exampleNotificationCaption: 'Você pode cancelar a inscrição a qualquer momento.',
+                acceptButtonText: "Permitir",
+                cancelButtonText: "Não Obrigado",
+                safari_web_id: '31ca14f2-9a64-44ce-b1fb-164017f55430'
+            },
+            welcomeNotification:
+            {
+                disable: false,
+                title: 'Bem-vindo',
+                message: 'Obrigado por se inscrever.'
+            },
+            httpPermissionRequest:
+            {
+                enable: true,
+                modalTitle: 'Fique por dentro',
+                modalMessage: 'Seja alertado sempre que algo grande aconteça.',
+                modalButtonText: 'Eu quero saber mais!'
+            }
+        }
+        ]);
+    </script>
 
 </head>
 <body>
@@ -36,7 +79,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <div id="fb-root"></div>
-                @Html.ActionLink("Notification Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("AstroPush", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
@@ -51,7 +94,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Notification Manager</p>
+            <p>&copy; @DateTime.Now.Year - AstroPush</p>
         </footer>
     </div>
 
