@@ -18,7 +18,8 @@
     <script src="@Url.Content("~/Scripts/jquery-ui-1.12.min.js")"></script>
 
     @* Notif Push *@
-    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"></script>
+    <link rel="manifest" href="/manifest.json">
+    <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
     <script>
         var OneSignal = window.OneSignal || [];
         OneSignal.push(["init", {
@@ -56,8 +57,7 @@
                 modalMessage: 'Seja alertado sempre que algo grande aconteça.',
                 modalButtonText: 'Eu quero saber mais!'
             }
-        }
-        ]);
+        }]);
     </script>
 </head>
 <body>

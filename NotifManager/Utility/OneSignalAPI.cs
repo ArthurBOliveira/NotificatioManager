@@ -399,6 +399,7 @@ namespace NotifManager.Utility
         {
             string result = "";
 
+            result += "<link rel=\"manifest\" href=\"/manifest.json\">\r\n";
             result += "<script src=\"https:/" + "/cdn.onesignal.com/sdks/OneSignalSDK.js\"></script>\r\n";
             result += "<script>\r\n";
             result += "var OneSignal = window.OneSignal || [];\r\n";

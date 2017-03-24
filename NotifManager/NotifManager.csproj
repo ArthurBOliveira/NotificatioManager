@@ -193,6 +193,8 @@
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.datetimepicker.full.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="OneSignalSDKUpdaterWorker.js" />
+    <Content Include="OneSignalSDKWorker.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -243,6 +245,7 @@
     <Content Include="Views\Home\Device.cshtml" />
     <Content Include="Scripts\jquery-1.12.4.min.map" />
     <Content Include="Views\Home\AppScript.cshtml" />
+    <Content Include="manifest.json" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

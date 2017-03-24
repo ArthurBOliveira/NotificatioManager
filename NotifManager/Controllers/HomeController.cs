@@ -227,16 +227,32 @@ namespace NotifManager.Controllers
         [AuthorizationFilter]
         public ActionResult Message(Message message)
         {
-            App app = _appRep.GetData<App>(message.AppId);
+            var response = Request["g-recaptcha-response"];
+            //secret that was generated in key value pair
+            const string secret = "6LeZshcUAAAAAMny_kt29xty2lncFqJGuUF_dtkL";
 
-            if (app.ClientId == _session.CurrentClient.Id)
+            var webClient = new WebClient();
+            var reply = webClient.DownloadString(string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}", secret, response));
+
+            var captchaResponse = JsonConvert.DeserializeObject<ReCaptchaValidator>(reply);
+
+            if (captchaResponse.Success != "false")
             {
-                message = OneSignalAPI.PostMessage(message);
+                App app = _appRep.GetData<App>(message.AppId);
 
-                if (message.Id != Guid.Empty)
+                if (app.ClientId == _session.CurrentClient.Id)
                 {
-                    _messageRep.PostData<Message>(message);
-                    return View(message);
+                    message = OneSignalAPI.PostMessage(message);
+
+                    if (message.Id != Guid.Empty)
+                    {
+                        _messageRep.PostData<Message>(message);
+                        return View(message);
+                    }
+                    else
+                    {
+                        return View(message);
+                    }
                 }
                 else
                 {
@@ -245,7 +261,7 @@ namespace NotifManager.Controllers
             }
             else
             {
-                return View(message);
+                return View();
             }
         }
 

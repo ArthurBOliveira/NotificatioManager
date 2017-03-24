@@ -147,3 +147,4 @@ C:\Users\aoliveira\Documents\Github\NotifManager\obj\Release\NotifManager.csproj
 C:\Users\aoliveira\Documents\Github\NotifManager\obj\Release\NotifManager.dll
 C:\Users\aoliveira\Documents\Github\NotifManager\obj\Release\NotifManager.pdb
 C:\Users\aoliveira\Documents\Github\NotifManager\bin\Owin.dll
+C:\Users\Arthur\Documents\GitHub\NotificatioManager\NotifManager\bin\Owin.dll
